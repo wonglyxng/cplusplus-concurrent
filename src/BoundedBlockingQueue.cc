@@ -4,31 +4,43 @@
 
 #include "../include/BoundedBlockingQueue.h"
 
-
-BoundedBlockingQueue::BoundedBlockingQueue(int capacity)
+template<typename T>
+BoundedBlockingQueue<T>::BoundedBlockingQueue(int capacity)
         : cap_(capacity) {
 
 }
 
-BoundedBlockingQueue::~BoundedBlockingQueue() = default;
+template<typename T>
+BoundedBlockingQueue<T>::~BoundedBlockingQueue() = default;
 
-void BoundedBlockingQueue::enqueue(int element) {
+template<typename T>
+void BoundedBlockingQueue<T>::enqueue(const T& element) {
     std::unique_lock<std::mutex> l(m_);
-    while (q_.size() >= cap_) cv_.wait(l);
+    while (q_.size() >= cap_){
+        cv_.wait(l);
+    }
     q_.push(element);
-    cv_.notify_all();
-
+    cv_.notify_one();
 }
 
-int BoundedBlockingQueue::dequeue() {
+template<typename T>
+void BoundedBlockingQueue<T>::dequeue(T& element) {
     std::unique_lock<std::mutex> l(m_);
-    while (q_.empty()) cv_.wait(l);
-    int res = q_.front();
+    while (q_.empty()){
+        cv_.wait(l);
+    }
+    element = q_.front();
     q_.pop();
-    cv_.notify_all();
-    return res;
 }
 
-int BoundedBlockingQueue::size() {
+template<typename T>
+int BoundedBlockingQueue<T>::size() {
+    std::unique_lock<std::mutex> l(m_);
     return q_.size();
+}
+
+template<typename T>
+bool BoundedBlockingQueue<T>::empty() {
+    std::unique_lock<std::mutex> l(m_);
+    return q_.empty();
 }

@@ -9,6 +9,7 @@
 #include <mutex>
 #include <condition_variable>
 
+template<typename T>
 class BoundedBlockingQueue {
 
 public:
@@ -16,14 +17,15 @@ public:
 
     virtual ~BoundedBlockingQueue();
 
-    void enqueue(int element);
-    int dequeue();
+    void enqueue(const T& element);
+    void dequeue(T& element);
     int size();
+    bool empty();
 
 private:
-    std::queue<int> q_;
+    std::queue<T> q_;
     int cap_{};
-    std::mutex m_;
+    mutable std::mutex m_;
     std::condition_variable cv_;
 };
 
