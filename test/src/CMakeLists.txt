@@ -37,6 +37,7 @@ include_directories("../../include/")
 
 add_executable(test_ut
         BoundedBlockingQueue_ut.cc
+        Utils_ut.cc
         )
 
 set_target_properties(test_ut

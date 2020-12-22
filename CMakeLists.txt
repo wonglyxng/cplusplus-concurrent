@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 include_directories(include)
 
-option(BUILD_UNIT_TESTS "Enable unit test" OFF)
+option(BUILD_UNIT_TESTS "Enable unit test" ON)
 
 if (BUILD_UNIT_TESTS)
     enable_testing()
@@ -14,9 +14,11 @@ endif ()
 
 set(header_files
         include/BoundedBlockingQueue.h
+        include/Utils.h
         )
 set(source_files
         src/BoundedBlockingQueue.cc
+        src/Utils.cc
         )
 
 add_library(cplusplus-concurrent STATIC
