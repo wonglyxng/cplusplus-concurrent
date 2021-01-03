@@ -10,10 +10,14 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
+#include <ifaddrs.h>
+
 #endif
 
 std::vector<std::string> getLocalHostIPs() {
     std::vector<std::string> localIps;
+#ifdef _WIN32
+#else
     struct ifaddrs *ifList;
 
     if (getifaddrs(&ifList) == -1) {
@@ -43,5 +47,6 @@ std::vector<std::string> getLocalHostIPs() {
     if (ifList) {
         freeifaddrs(ifList);
     }
+#endif
     return localIps;
 }

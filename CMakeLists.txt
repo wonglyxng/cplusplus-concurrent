@@ -4,6 +4,7 @@ project(cplusplus-concurrent)
 set(CMAKE_CXX_STANDARD 17)
 
 include_directories(include)
+include_directories(3rdparty/spdlog/include)
 
 option(BUILD_UNIT_TESTS "Enable unit test" ON)
 
@@ -15,10 +16,16 @@ endif ()
 set(header_files
         include/BoundedBlockingQueue.h
         include/Utils.h
+        include/Runnable.h
+        include/Logger.h
+        include/ThreadPoolExecutor.h
         )
 set(source_files
         src/BoundedBlockingQueue.cc
         src/Utils.cc
+        src/Runnable.cc
+        src/Logger.cc
+        src/ThreadPoolExecutor.cc
         )
 
 add_library(cplusplus-concurrent STATIC
